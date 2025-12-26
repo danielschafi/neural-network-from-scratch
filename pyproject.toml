@@ -1,0 +1,18 @@
+[project]
+name = "neural-network-from-scratch"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "ipykernel>=7.1.0",
+    "matplotlib>=3.10.8",
+    "numpy>=2.4.0",
+    "scipy>=1.16.3",
+    "torch>=2.9.1",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.14.10",
+]
