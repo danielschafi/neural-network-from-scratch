@@ -166,8 +166,8 @@ def load_data_MNIST():
 
 def main():
     train_data, test_data = load_data_MNIST()
-    net = Network([784, 20, 10])
-    net.train(train_data, epochs=20, batch_size=30, lr=0.01, test_data=test_data)
+    net = Network([784, 30, 10])
+    net.train(train_data, epochs=30, batch_size=10, lr=3.0, test_data=test_data)
 
 
 if __name__ == "__main__":
