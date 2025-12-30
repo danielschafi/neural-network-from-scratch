@@ -23,7 +23,6 @@ class SimpleNetwork:
         """
         self.num_layers = len(sizes)
         self.sizes = sizes
-
         # Where x is the size of the previous layer and y the size of the next layer
         self.w = [
             np.random.randn(y, x) for x, y in zip(self.sizes[:-1], self.sizes[1:])
