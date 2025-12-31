@@ -40,28 +40,35 @@ To find the weights and biases that minimize the cost function we use Gradient D
 At the start, all the parameters of the network are random, we now need an update rule to change the parameters in a way that the output of the network gets closer to the expected output.
 
 It can be said that in an example with two parameters $w_1, w_2$ a change in the cost function $C$ can be approximated as:
+
 $$
 \begin{align}
 \Delta C &\approx \frac{\partial C}{\partial w_1} \Delta w_1 + \frac{\partial C}{\partial w_2} \Delta w_2 \\
 \end{align}
 $$
+
 We now want to choose $\Delta w = (\Delta w_1, \Delta w_2)^T$ as to make $\Delta C$ negative, so that the cost function decreases.
 
 If we have $\nabla C = ( \frac{\partial C}{\partial w_1},  \frac{\partial C}{\partial w_2})^T$ then 1) can be rewritten as:
+
 $$
 \Delta C  \approx \nabla C \cdot \Delta w
 $$
 
 Now if we choose to adjust the parameters like $\Delta w = -\eta \nabla C$ and some  small $\eta > 0$ (the learning rate) we get:
+
 $$
 \Delta C \approx -\eta ||\nabla C||^2
 $$
+
 And since $||\nabla C||²$ will always be positive, the $\Delta C$ will always be negative, and the cost function will decrease.
 
 And so we have our update rule for $w$ :
+
 $$
 v \rightarrow w' = w - \eta \nabla C
 $$
+
 And this works for any number of parameters, not just two and so we can apply it to our neural network.
 
 However, note that this guarantee would only hold for infinitesimally small learning rate $\eta$. In practice we have to choose a larger learning rate, which can lead to situations where the cost function actually increases. Furthermore, this only leads to the global minimum if the cost function is convex, which is not the case for neural networks.
@@ -69,9 +76,11 @@ However, note that this guarantee would only hold for infinitesimally small lear
 ## Backpropagation
 
 Now our goal is to minimize this function with respect to a Cost/Loss function. In our MNIST example this is simply the Squared Error
+
 $$
 C = \frac{1}{2n}\sum_x ||y(x) - a^L(x)||
 $$
+
 Where $y(x)$ is the expected output, $a^L(x)$ is the output of our network (the networks last activation layer) and $||x||$ is the Euclidean Norm.
 We use $2n$ so that the derivative of the individual cost $C_x$ becomes a bit nicer and it does not affect the optimization since the cost is just scaled by a factor.
 
@@ -90,6 +99,7 @@ There are four steps to performing backpropagation, which we will denote as 1BP,
 #### 1BP - Error in the output layer
 
 For the last layer of the network, we can calculate the derivatives directly using the chain rule, we know everything we need:
+
 $$
 \begin{align}
 \frac{\partial C}{\partial z^L} = \frac{\partial C}{\partial a^L} \frac{\partial a^L}{\partial z^l} = \nabla_a C \odot \sigma'(z^L) = (a^L -y) \odot \sigma'(z^L)
@@ -103,6 +113,7 @@ We do this by moving the error backwards through the network, by taking the erro
 So if a node has a high error in layer $l+1$ and is strongly connected to a node in layer $l$, then that node in layer $l$ should also have a high error.
 
 So tl;dr we propagate $\frac{\partial C}{\partial a^{l+1}}$ to the previous layer via $(w^{l+1})^T$
+
 $$
 \begin{align}
 \frac{\partial C}{\partial z^l} = \left ( (w^{l+1})^T \ \frac{\partial C }{\partial z^{l+1}} \odot \sigma '(z^l) \right)
@@ -114,6 +125,7 @@ $$
 The gradient wrt. biases is equal to the error in that layer, since it is just added to the weighted sum of inputs.
 
 In  4BP you will notice, that the gradient wrt. weights also contains the activation from the previous layer. If you think about the bias as just another input/activation from the previous layer that is always equal to 1, you can see why it is equal to the error.
+
 $$
 \begin{align}
 \frac{\partial C}{\partial b_j^l} = \frac{\partial C}{\partial z_j^l} \cdot 1 = \frac{\partial C}{\partial z_j^l}
@@ -124,6 +136,7 @@ $$
 
 Finally, the gradient wrt. weights is equal to the error in that layer multiplied by the activation from the previous layer.
 Conceptually, if the error in layer $l$ is high, and the activation in the previous layer is high, then we want less of that signal to pass through that weight, so we decrease the weight.
+
 $$
 \begin{align}
 \frac{\partial C }{\partial w_{jk}^l} = \frac{\partial C}{\partial z_j^l} \cdot a_k^{l-1}
