@@ -44,7 +44,7 @@ And since $||\nabla C||²$ will always be positive, the $\Delta C$ will always b
 
 And so we have our update rule:
 $$
-v \rightarrow v - \eta ||\nabla C||²
+v \rightarrow v - \eta \nabla C
 $$
 And this works for any number of parameters, not just two and so we can apply it to our neural network.
 
@@ -75,51 +75,10 @@ $$
 C_x = \frac{1}{2}||y(x) - a^L(x)|| \quad \quad \nabla_a C_x=a^L(x)-y(x)
 $$
 
-To make the update step, we need to compute the gradients $\frac{\partial C_x}{\partial w_{jk}^l}$
+To find the minimum of this function we can use Gradient Descent
 
-And so basically what we are doing is, we want to find out how much each weight is responsible for the error in the output, and then change the weights to reduce that error.
+### Matrix Form
 
-### 4 Rules for Backpropagation
+Neural networks are actually all matrix multiplications, so we can write the earlier equations a bit simpler.
 
-#### 1BP - Error in the output layer
-
-For the last layer of the network, we can calculate the derivatives directly using the chain rule, we know everything we need:
-$$
-\begin{align}
-\frac{\partial C}{\partial z^L} = \frac{\partial C}{\partial a^L} \frac{\partial a^L}{\partial z^l} = \nabla_a C \odot \sigma'(z^L) = (a^L -y) \odot \sigma'(z^L)
-\end{align}
-$$
-
-#### 2BP - Backpropagate the error
-
-For the other layers, we can use the chain rule again to express the error in layer $l$
-We do this by moving the error backwards through the network, by taking the error in layer $l+1$ and multiplying it by the weights connecting layer $l$ to layer $l+1$.
-So if a node has a high error in layer $l+1$ and is strongly connected to a node in layer $l$, then that node in layer $l$ should also have a high error.
-
-So tl;dr we propagate $\frac{\partial C}{\partial a^{l+1}}$ to the previous layer via $(w^{l+1})^T$
-$$
-\begin{align}
-\frac{\partial C}{\partial z^l} = \left ( (w^{l+1})^T \ \frac{\partial C }{\partial z^{l+1}} \odot \sigma '(z^l) \right)
-\end{align}
-$$
-
-#### 3BP - Gradient wrt. biases
-
-The gradient wrt. biases is equal to the error in that layer, since it is just added to the weighted sum of inputs.
-
-In  4BP you will notice, that the gradient wrt. weights also contains the activation from the previous layer. If you think about the bias as just another input/activation from the previous layer that is always equal to 1, you can see why it is equal to the error.
-$$
-\begin{align}
-\frac{\partial C}{\partial b_j^l} = \frac{\partial C}{\partial z_j^l} \cdot 1 = \frac{\partial C}{\partial z_j^l}
-\end{align}
-$$
-
-#### 4BP - Gradient wrt. weights
-
-Finally, the gradient wrt. weights is equal to the error in that layer multiplied by the activation from the previous layer.
-Conceptually, if the error in layer $l$ is high, and the activation in the previous layer is high, then we want less of that signal to pass through that weight, so we decrease the weight.
-$$
-\begin{align}
-\frac{\partial C }{\partial w_{jk}^l} = \frac{\partial C}{\partial z_j^l} \cdot a_k^{l-1}
-\end{align}
-$$
+### Motivation
