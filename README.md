@@ -3,7 +3,7 @@ This repository contains some Machine Learning / Deep Learning Algorithms implem
 The purpose of the implementations is to be easy to understand and are *not* optimized for performance.
 
 ## Dependencies
-You can install the necessary dependencies with `uv` & `pip`:
+You can install the necessary dependencies with `uv` or `pip`:
 ```
 uv install
 ```
