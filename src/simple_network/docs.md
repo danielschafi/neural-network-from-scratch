@@ -21,9 +21,11 @@ Thats where neural networks come in. They are able to fit arbitrarily complex fu
 ## Architecture
 
 A neural network is a function that looks like this (for one with three layers):
+
 $$
 f(x; W,b) = \sigma(w² \sigma(w¹  \sigma(w⁰x + b⁰) + b¹) + b²)
 $$
+
 It consists of Input layer, one or more hidden layers and an output layer. Each layer consists of neurons, which are connected to the neurons in the previous layer via weights. Each neuron also has a bias term.
 
 We don't count the input layer as a layer, since it does not do any computation, it just passes the input to the next layer.
